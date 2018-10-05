@@ -23,6 +23,13 @@ import (
 	"math"
 )
 
+func abs(f float64) float64 {
+	if f < 0 {
+		return -f
+	}
+	return f
+}
+
 // Space represents a collection that holds Shapes for collision detection in the same common space. A Space is arbitrarily large -
 // you can use one Space for a single level, room, or area in your game, or split it up if it makes more sense for your game design.
 // Technically, a Space is just a slice of Shapes.
@@ -293,7 +300,7 @@ func Resolve(firstShape Shape, other Shape, deltaX, deltaY int32) Collision {
 		slope = float32(deltaY) / float32(deltaX)
 	}
 
-	if math.Abs(float64(deltaY)) > math.Abs(float64(deltaX)) {
+	if abs(float64(deltaY)) > abs(float64(deltaX)) {
 		primeX = false
 		if deltaY != 0 && deltaX != 0 {
 			slope = float32(deltaX) / float32(deltaY)
@@ -345,7 +352,7 @@ func Resolve(firstShape Shape, other Shape, deltaX, deltaY int32) Collision {
 
 	}
 
-	if math.Abs(float64(deltaX-out.ResolveX)) > math.Abs(float64(deltaX)*1.5) || math.Abs(float64(deltaY-out.ResolveY)) > math.Abs(float64(deltaY)*1.5) {
+	if abs(float64(deltaX-out.ResolveX)) > abs(float64(deltaX)*1.5) || abs(float64(deltaY-out.ResolveY)) > abs(float64(deltaY)*1.5) {
 		out.Teleporting = true
 	}
 
@@ -504,6 +511,6 @@ func Distance(x, y, x2, y2 int32) int32 {
 	dx := x - x2
 	dy := y - y2
 	ds := (dx * dx) + (dy * dy)
-	return int32(math.Sqrt(math.Abs(float64(ds))))
+	return int32(math.Sqrt(abs(float64(ds))))
 
 }
